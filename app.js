@@ -114,17 +114,19 @@ const evaluateHand = function (hand) {
       if (hand[4].value - hand[0].value === 4 || (hand[4].value - hand[0].value === 12 && hand[3].value - hand[2].value === 1)) {
         if (isFlush) {
           cardText = "Straight Flush";
+          // if hand is 10JQKA, Royal Flush
+          if (hand[0].value === 10 && hand[4].value === 14) {
+            handVal = "Royal Flush!";
+            break;
+          }
         }
         else {
           cardText = "Straight";
         }
+        // if hand is 2345A, set A to low card
         if (hand[0].value === 2 && hand[4].value === 14) {
           highCard = hand[3];
           lowCard = hand[4];
-        }
-        else if (hand[0].value === 10 && hand[4].value === 14) {
-          handVal = "Royal Flush!";
-          break;
         }
         else {
           highCard = hand[4];
@@ -160,7 +162,7 @@ const evaluateHand = function (hand) {
       for (let x in cardHistogram) {
         // 3 of a kind
         if (cardHistogram[x] == 3) {
-          cardText = `Three of a Kind`;
+          cardText = `Three of a kind`;
           cardArr.push(x);
           break;
         }
@@ -171,7 +173,7 @@ const evaluateHand = function (hand) {
           cardArr.push(x);
         }
       }
-      handVal = `${cardText}, ${cardArr.join('s and ')}s`;
+      handVal = `${cardText} (${cardArr.join('s and ')}s)`;
       break;
 
     // 2 unique cards: Full House or Four of a Kind
@@ -190,9 +192,10 @@ const evaluateHand = function (hand) {
           handVal = `Full House, ${card1}s full of ${card2}s`;
         }
 
-        // 2 pair
+        // 4 of a kind
         if (cardHistogram[x] == 4) {
-          handVal = `Four of a kind`;
+          handVal = `Four of a kind (${x}s)`;
+          break;
         }
 
       }
